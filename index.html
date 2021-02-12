@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.35/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.35/"></script>
+    <script>
+  var map, csv;
+   require([
+             "esri/map" ,
+             "esri/layers/CSVLayer" ,
+              "esri/Color",
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/renderers/SimpleRenderer",
+        "esri/InfoTemplate",
+        "esri/config",
+        "dojo/domReady!"
+            ], function(
+             Map, CSVLayer, Color, SimpleMarkerSymbol, SimpleRenderer, InfoTemplate, esriConfig
+           ) {
+           	esri.config.defaults.io.corsEnabledServers.push("tutanabg.github.io");
+        	
+    map = new Map("map", {
+    basemap: "gray-vector",
+    center: [-60, -10],
+    zoom: 3
+  });
+  
+  csv = new CSVLayer("https://tutanabg.github.io/csv_new/edited.csv", {
+          copyright: "USGS.gov"
+        
+        });
+        var orangeRed = new Color([90, 50, 50, 0.5]); // hex is #ff4500
+        var marker = new SimpleMarkerSymbol("solid", 15, null, orangeRed);
+        var renderer = new SimpleRenderer(marker);
+        csv.setRenderer(renderer);
+        var template = new InfoTemplate("${number}");
+        csv.setInfoTemplate(template);
+        map.addLayer(csv);
+});
+    </script>
+    <title>My Area</title>
+    <style>
+  html, body, #map {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+</style>
+  </head>
+  <body class="claro">
+  <div id="map"></div>
+</body>
+</html>
